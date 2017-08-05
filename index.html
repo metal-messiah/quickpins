@@ -1,7 +1,9 @@
 <!doctype html>
 <html>
 <head>
-    <title>Socket.IO chat</title>
+    <title>Quick Pins</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.21/esri/css/esri.css">
+    <link rel="stylesheet" href="/css/map.css">
     <style>
         * {
             margin: 0;
@@ -51,24 +53,25 @@
     </style>
 </head>
 <body>
-<ul id="messages"></ul>
-<form action="">
-    <input id="m" autocomplete="off"/>
-    <button>Send</button>
-</form>
+<div id="map"></div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
-    $(function () {
+    $.noConflict()
+</script>
+<script src="https://js.arcgis.com/3.21/"></script>
+<script src='/js/map.js'></script>
+
+<script>
+    jQuery(function () {
         var socket = io();
-        $('form').submit(function () {
-            socket.emit('chat message', $('#m').val());
+        jQuery('form').submit(function () {
+            socket.emit('chat message', jQuery('#m').val());
             $('#m').val('');
             return false;
         });
-
-        socket.on('chat message', function(msg){
-            $('#messages').append($('<li>').text(msg));
+        socket.on('chat message', function (msg) {
+            jQuery('#messages').append(jQuery('<li>').text(msg));
         });
     });
 </script>
