@@ -4,4 +4,6 @@
     position: absolute;
     top: 25px;
     right: 25px;
+    color: black;
+    text-shadow: none;
 }

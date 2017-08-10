@@ -1,0 +1,16 @@
+build distance calculations
+
+build score card
+
+figure out how to load some questions
+
+figure out login stuff
+
+ads
+
+chat
+
+custom symbols
+
+formatting
+

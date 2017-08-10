@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "description": "an interactive multiplayer web map game",
   "dependencies": {
+    "body-parser": "^1.17.2",
+    "countdown": "^2.6.0",
     "express": "^4.15.2",
+    "fs": "0.0.1-security",
     "socket.io": "^2.0.3"
   }
 }

@@ -1,10 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Quick Pins</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/3.21/esri/css/esri.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+    <link rel="stylesheet" href="/css/map.css">
+    <link rel="stylesheet" href="/css/gui.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+
 </head>
 <body>
+<div class="wrapper" id="signIn">
+    <div class="centerAll">
+        <div>
+            <input id="nickname" placeholder="Nickname">
+            <button id="play">Play</button>
+        </div>
+    </div>
+
+</div>
+<div class="pane" id="intro">
+    <div class="info">
+        <div class="infoCentered">INTRO</div>
+    </div>
+</div>
+<div class="pane" id="clue">
+    <div class="info">
+        <div class="infoCentered">CLUE</div>
+    </div>
+</div>
+<div id="pin">
+    <div id="mapDiv"></div>
+    <div id="submitPin">Submit Pin</div>
+
+</div>
+<div class="pane" id="score">
+    <div class="info">
+        <div class="infoCentered">SCORE</div>
+    </div>
+</div>
+<div id="timer"></div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    socket = io();
+</script>
+
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous"></script>
+<script>
+    $.noConflict();
+</script>
+<script src="https://js.arcgis.com/3.21/"></script>
+
+<script src='/js/map.js'></script>
+<script src='/js/pins.js'></script>
+<script src='/js/gui.js'></script>
+<script src='/js/socketHandler.js'></script>
+<script>
+    jQuery("#play").click(function () {
+        var nickname = jQuery("#nickname").val();
+        if (nickname) {
+            var data = {
+                nickname: nickname
+            };
+            joinGame(data)
+        }
+    })
+</script>
 
 </body>
 </html>
