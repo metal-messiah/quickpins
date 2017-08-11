@@ -14,3 +14,4 @@ custom symbols
 
 formatting
 
+countries = https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Countries/FeatureServer/0
