@@ -23,10 +23,14 @@ app.post('/users/validate', function (req, res) {
     if (!req.body) return res.sendStatus(400);
     else {
         var userID = req.body.id;
-        if (users[userID].nickname) {
-            return res.send(true)
-        }
-        else {
+        if (users[userID]) {
+            if (users[userID].nickname) {
+                return res.send(true)
+            }
+            else {
+                return res.send(false)
+            }
+        } else {
             return res.send(false)
         }
     }
@@ -36,8 +40,13 @@ app.post('/users/symbol', function (req, res) {
     if (!req.body) return res.sendStatus(400);
     else {
         var userID = req.body.id;
-        if (users[userID].nickname) {
-            return res.send(users[userID].pin.symbol)
+        if (users[userID]) {
+            if (users[userID].nickname) {
+                return res.send(users[userID].pin.symbol)
+            }
+            else {
+                return res.send(false)
+            }
         }
         else {
             return res.send(false)
@@ -45,16 +54,47 @@ app.post('/users/symbol', function (req, res) {
     }
 });
 
+app.post('/users/getuser', function (req, res) {
+    if (!req.body) return res.sendStatus(400);
+    else {
+        var userID = req.body.id;
+        if (users[userID]) {
+            if (users[userID].nickname) {
+                return res.send(users[userID])
+            }
+            else {
+                return res.send(false)
+            }
+        } else {
+            return res.send(false)
+        }
+    }
+});
+
 app.post('/app/restart', function (req, res) {
-    if (Object.keys(users).length == 1) {
-        console.log("intro timer");
-        introTimer();
+    if (!req.body) return res.sendStatus(400);
+    else {
+        if (Object.keys(users).length == 1) {
+            console.log("intro timer");
+            introTimer();
+        }
     }
 });
 
 app.post('/app/mode', function (req, res) {
-    return res.send(settings.mode)
+    if (!req.body) return res.sendStatus(400);
+    else {
+        return res.send(settings.mode)
+    }
 });
+
+app.post('/app/getclue', function (req, res) {
+    if (!req.body) return res.sendStatus(400);
+    else {
+        return res.send(clue)
+    }
+});
+
 
 function randomValue(min, max) {
     min = Math.ceil(min);
@@ -62,7 +102,65 @@ function randomValue(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
 }
 
+function distance(lat1, lon1, lat2, lon2, unit) {
+    var radlat1 = Math.PI * lat1 / 180;
+    var radlat2 = Math.PI * lat2 / 180;
+    var theta = lon1 - lon2;
+    var radtheta = Math.PI * theta / 180;
+    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    dist = Math.acos(dist);
+    dist = dist * 180 / Math.PI;
+    dist = dist * 60 * 1.1515;
+    //no unit returns as miles
+    if (unit == "K") {
+        dist = dist * 1.609344;
+    }
+    if (unit == "N") {
+        dist = dist * 0.8684;
+    }
+    return dist
+}
+
+function Pin(nickname, score, symbol, rounds) {
+    this.nickname = nickname || null;
+    this.score = score || 0;
+    this.rounds = rounds || 0;
+    this.pin = {
+        geom: null,
+        symbol: symbol || {
+            "color": {"r": randomValue(0, 255), "g": randomValue(0, 255), "b": randomValue(0, 255), "a": 1},
+            "angle": 30,
+            "type": "simplemarkersymbol",
+            "style": "circle",
+            "outline": {
+                "color": {"r": 0, "g": 0, "b": 0, "a": 1},
+                "width": 1,
+                "type": "simplelinesymbol",
+                "style": "solid"
+            },
+            "size": 16,
+            "xoffset": 0,
+            "yoffset": 0
+        },
+        multiplier: 0,
+        distance: 0,
+        lat: 89.99,
+        lng: 0
+    }
+}
+
 var users = {};
+
+var answer = {
+    lat: 41,
+    lng: -110,
+    spatialReference: {wkid: 102100, latestWkid: 3857},
+    description: "Salt Lake City, UT"
+};
+
+var clue = {
+
+};
 
 var settings = {
     mode: null
@@ -159,7 +257,8 @@ io.on('connection', function (socket) {
                             settings.mode = "clue";
                             for (var index in users) {
                                 if (users.hasOwnProperty(index)) {
-                                    users[index].pin.geom = null;
+                                    // clear the pins for each user
+                                    users[index] = new Pin(users[index].nickname, users[index].score, users[index].pin.symbol, users[index].pin.rounds);
                                 }
                             }
 
@@ -243,12 +342,17 @@ io.on('connection', function (socket) {
                             for (var index in users) {
                                 if (users.hasOwnProperty(index)) {
                                     var sID = index;
-                                    var score = users[index].pin.distance * users[index].pin.multiplier;
+                                    var pin = users[index].pin;
+                                    var dist = pin.distance = distance(pin.lat, pin.lng, answer.lat, answer.lng);
+                                    var score = pin.distance * pin.multiplier;
+                                    users[index].rounds += 1;
+                                    users[index].score = (users[index].score + score) / users[index].rounds;
                                     data = {
                                         id: sID,
                                         nickname: users[index].nickname,
                                         score: score,
-                                        pin: users[index].pin
+                                        pin: pin,
+                                        avgScore: users[index].score
                                     };
                                     scores.push(data);
                                 }
@@ -275,30 +379,7 @@ io.on('connection', function (socket) {
     }
 
     console.log(socket.id + " joined the server -- loading login page");
-    users[socket.id] = {
-        nickname: null,
-        score: 0,
-        pin: {
-            geom: null,
-            symbol: {
-                "color": {"r": randomValue(0, 255), "g": randomValue(0, 255), "b": randomValue(0, 255), "a": 1},
-                "angle": 30,
-                "type": "simplemarkersymbol",
-                "style": "circle",
-                "outline": {
-                    "color": {"r": 0, "g": 0, "b": 0, "a": 1},
-                    "width": 1,
-                    "type": "simplelinesymbol",
-                    "style": "solid"
-                },
-                "size": 16,
-                "xoffset": 0,
-                "yoffset": 0
-            },
-            multiplier: 0,
-            distance: 0
-        }
-    };
+    users[socket.id] = new Pin();
 
     socket.on('disconnect', function () {
         console.log('user disconnected');
@@ -314,6 +395,8 @@ io.on('connection', function (socket) {
         users[socket.id].pin.geom = data.geom;
         //users[socket.id].pin.symbol = data.symbol;
         users[socket.id].pin.multiplier = data.mult;
+        users[socket.id].pin.lat = data.lat;
+        users[socket.id].pin.lng = data.lng;
         //console.log(users[socket.id]);
         //io.emit('pin', data);
     });

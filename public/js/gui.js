@@ -4,9 +4,11 @@
 
 
 
+
 jQuery("#submitPin").button().click(function () {
     console.debug("SENDING PIN");
-    sendPin(myPin());
+    var pin = myPin()
+    sendPin(pin, pin.geometry.getLatitude(), pin.geometry.getLongitude());
 });
 
 
@@ -18,16 +20,16 @@ function togglePanes(mode, userID) {
         function (userExists) {
             if (userExists) {
                 if (mode != "score" && mode != 'intro') {
-                    jQuery(".pane").hide(500);
+                    jQuery(".pane").slideUp(500);
                 }
                 if (mode == 'clue') {
                     map.graphics.clear();
                     zoomTo("fullExtent");
-                    jQuery("#submitPin").show();
+                    jQuery("#submitPin").slideDown();
                 }
 
                 if (mode != 'intro') {
-                    jQuery("#" + mode).show(500);
+                    jQuery("#" + mode).slideDown(500);
                 }
             }
         }
@@ -35,3 +37,16 @@ function togglePanes(mode, userID) {
 
 
 }
+
+jQuery("#nickname").tooltip();
+
+jQuery("#play").click(function () {
+    var nickname = jQuery("#nickname").val();
+    if (nickname) {
+        var data = {
+            nickname: nickname
+        };
+        joinGame(data);
+        clearInterval(playButton);
+    }
+})

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Quick Pins</title>
+    <link href="https://fonts.googleapis.com/css?family=Aldrich" rel="stylesheet">
     <link rel="stylesheet" href="https://js.arcgis.com/3.21/esri/css/esri.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
     <link rel="stylesheet" href="/css/map.css">
@@ -16,8 +17,8 @@
 <div class="wrapper" id="signIn">
     <div class="centerAll">
         <div>
-            <input id="nickname" placeholder="Nickname">
-            <button id="play">Play</button>
+            <input title="Enter Nickname" class="ui-button ui-corner-all ui-widget" id="nickname">
+            <button class="ui-button ui-corner-all ui-widget" id="play">Play</button>
         </div>
     </div>
 
@@ -39,7 +40,9 @@
 </div>
 <div class="pane" id="score">
     <div class="info">
-        <div class="infoCentered">SCORE</div>
+        <div class="infoCentered">SCORE<br>
+            <div id="scoreResults"></div>
+        </div>
     </div>
 </div>
 <div id="timer"></div>
@@ -63,15 +66,37 @@
 <script src='/js/gui.js'></script>
 <script src='/js/socketHandler.js'></script>
 <script>
-    jQuery("#play").click(function () {
-        var nickname = jQuery("#nickname").val();
-        if (nickname) {
-            var data = {
-                nickname: nickname
-            };
-            joinGame(data)
-        }
-    })
+
+    function formatNumber(number, decimals) {
+        return Number(number.toFixed(decimals)).toLocaleString('en')
+    }
+
+    function myInfo() {
+        jQuery.post("/users/getuser", {
+                id: socket.id
+            },
+            function (resp) {
+                console.log(resp);
+            }
+        );
+    }
+
+    function randomValue(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+    }
+
+    var playButton = setInterval(function () {
+        var color = "rgb(" + randomValue(200, 255) + "," + randomValue(200, 255) + "," + randomValue(200, 255) + ")"
+        jQuery("#play").animate({
+            backgroundColor: color
+        })
+
+
+    }, 500)
+
+
 </script>
 
 </body>

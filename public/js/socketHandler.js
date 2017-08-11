@@ -7,7 +7,10 @@ jQuery(function () {
 
     socket.on('scores', function (data) {
         for (var i = 0; i < data.length; i++) {
-            console.log(data[i]);
+            //console.log(data);
+            if (data[i].id == socket.id) {
+                jQuery("#scoreResults").html("Current Score - " + formatNumber(data[i].score, 2) + " Miles Off<hr>Average Score - " + formatNumber(data[i].avgScore, 2) + " Miles Off")
+            }
         }
         showAllPins(data);
 
@@ -30,8 +33,8 @@ jQuery(function () {
             function (mode) {
                 console.log(mode);
                 if (mode) {
-                    jQuery('#signIn').hide(500);
-                    jQuery("#" + mode).show(500);
+                    jQuery('#signIn').slideUp(500);
+                    jQuery("#" + mode).slideDown(500);
                 }
             }
         );
@@ -54,10 +57,17 @@ jQuery(function () {
     });
 
 
-    sendPin = function (marker) {
+    sendPin = function (marker, lat, lng) {
         console.debug("SENDING OBJ to SERVER");
-        jQuery("#submitPin").hide();
+        jQuery("#submitPin").slideUp(500);
         //console.log(marker);
-        socket.emit('pin', {geom: marker.geometry, symbol: marker.symbol, id: socket.id, mult: mult, dist: 0});
+        socket.emit('pin', {
+            geom: marker.geometry,
+            symbol: marker.symbol,
+            id: socket.id,
+            mult: mult,
+            lat: lat,
+            lng: lng
+        });
     }
 });
