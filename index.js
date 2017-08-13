@@ -9,6 +9,8 @@ var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var countdown = require('countdown');
+var request = require('request');
+var helpers = require(__dirname + "/js/helpers");
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
@@ -75,7 +77,7 @@ app.post('/app/restart', function (req, res) {
     if (!req.body) return res.sendStatus(400);
     else {
         if (Object.keys(users).length == 1) {
-            console.log("intro timer");
+            //console.log("intro timer");
             introTimer();
         }
     }
@@ -96,81 +98,6 @@ app.post('/app/getclue', function (req, res) {
 });
 
 
-function randomValue(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
-}
-
-function distance(lat1, lon1, lat2, lon2, unit) {
-    var radlat1 = Math.PI * lat1 / 180;
-    var radlat2 = Math.PI * lat2 / 180;
-    var theta = lon1 - lon2;
-    var radtheta = Math.PI * theta / 180;
-    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-    dist = Math.acos(dist);
-    dist = dist * 180 / Math.PI;
-    dist = dist * 60 * 1.1515;
-    //no unit returns as miles
-    if (unit == "K") {
-        dist = dist * 1.609344;
-    }
-    if (unit == "N") {
-        dist = dist * 0.8684;
-    }
-    return dist
-}
-
-function inside(point, vs) {
-    // ray-casting algorithm based on
-    // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-
-    var x = point[0], y = point[1];
-
-    var inside = false;
-    for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-        var xi = vs[i][0], yi = vs[i][1];
-        var xj = vs[j][0], yj = vs[j][1];
-
-        var intersect = ((yi > y) != (yj > y))
-            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-        if (intersect) inside = !inside;
-    }
-
-    return inside;
-};
-
-//var polygon = [ [ 1, 1 ], [ 1, 2 ], [ 2, 2 ], [ 2, 1 ] ];
-//inside([ 1.5, 1.5 ], polygon); // true
-
-function Pin(nickname, score, symbol, rounds) {
-    this.nickname = nickname || null;
-    this.score = score || 0;
-    this.rounds = rounds || 0;
-    this.pin = {
-        geom: null,
-        symbol: symbol || {
-            "color": {"r": randomValue(0, 255), "g": randomValue(0, 255), "b": randomValue(0, 255), "a": 1},
-            "angle": 30,
-            "type": "simplemarkersymbol",
-            "style": "circle",
-            "outline": {
-                "color": {"r": 0, "g": 0, "b": 0, "a": 1},
-                "width": 1,
-                "type": "simplelinesymbol",
-                "style": "solid"
-            },
-            "size": 16,
-            "xoffset": 0,
-            "yoffset": 0
-        },
-        multiplier: 0,
-        distance: 0,
-        lat: 89.99,
-        lng: 0
-    }
-}
-
 var users = {};
 
 var answer = {
@@ -183,7 +110,12 @@ var answer = {
 var clue = {};
 
 var settings = {
-    mode: null
+    mode: null,
+    topic: {
+        id: null,
+        nickname: null,
+        keyword: null
+    }
 };
 
 var timer;
@@ -191,16 +123,60 @@ var timerLengths = {
     intro: 15,
     clue: 10,
     pin: 30,
-    score: 15
+    score: 15,
+    topic: 15
 };
 var timerRunning = false;
 
 
 io.on('connection', function (socket) {
+
+
+    function topicHandler() {
+
+        var hasNotChosen = [];
+        for (key in users) {
+            if (users.hasOwnProperty(key) && users[key].nickname) {
+                //console.log(users[key].nickname + " Has Chosen? -- " + users[key].hasChosen)
+                if (!users[key].hasChosen) {
+                    hasNotChosen.push({id: key, nickname: users[key].nickname})
+                }
+            }
+        }
+        if (hasNotChosen.length) {
+            //console.log("HASNT CHOSEN HAS LENGTH");
+            var randomUserID = hasNotChosen[Math.floor(Math.random() * hasNotChosen.length)];
+            settings.topic.id = randomUserID.id;
+            settings.topic.nickname = randomUserID.nickname;
+            //console.log(users[settings.topic.id].hasChosen);
+            users[settings.topic.id].hasChosen = true;
+            //console.log(users[settings.topic.id].hasChosen);
+        }
+        else {
+            //console.log("HASNT CHOSEN DOESNT HAVE LENGTH");
+            for (key in users) {
+                if (users.hasOwnProperty(key) && users[key].nickname) {
+                    users[key].hasChosen = false;
+                    hasNotChosen.push({id: key, nickname: users[key].nickname})
+                }
+            }
+            var randomUserID = hasNotChosen[Math.floor(Math.random() * hasNotChosen.length)];
+            settings.topic.id = randomUserID.id;
+            settings.topic.nickname = randomUserID.nickname;
+            //console.log(users[settings.topic.id].hasChosen);
+            users[settings.topic.id].hasChosen = true;
+            //console.log(users[settings.topic.id].hasChosen);
+
+        }
+        //console.log("TOPIC HANDLER -- " + settings.topic.id + " - " + settings.topic.nickname);
+
+    }
+
+
     function multiplier(seconds, mode) {
         if (mode == "pin") {
             var mult;
-            //console.log(seconds)
+            ////console.log(seconds)
             if (seconds >= 20) {
                 mult = 1;
             }
@@ -220,6 +196,7 @@ io.on('connection', function (socket) {
     function endTimers() {
         timerRunning = false;
         clearInterval(timer);
+        io.emit('endGame', {})
     }
 
     function introTimer() {
@@ -235,15 +212,60 @@ io.on('connection', function (socket) {
                             io.emit('timer', {
                                 seconds: timerLengths.intro - ts.seconds,
                                 mode: "intro",
-                                mult: multiplier(timerLengths.intro - ts.seconds, "intro")
+                                mult: multiplier(timerLengths.intro - ts.seconds, "intro"),
+                                topic: settings.topic
                             });
                         }
                         if (ts.seconds == 0) {
-                            console.log("START INTRO");
+                            //console.log("START INTRO");
                             settings.mode = "intro";
+
+                        }
+                        if (ts.seconds == 2) {
+                            if (!settings.topic.id) {
+                                topicHandler();
+                            }
                         }
                         if (ts.seconds >= timerLengths.intro) {
-                            console.log("END INTRO -- START GAME TIMERS");
+                            //console.log("END INTRO -- START GAME TIMERS");
+                            clearInterval(timer);
+                            topicTimer();
+                        }
+                    }
+                );
+        }
+        else {
+            //console.log("No Users -- Don't Run Game")
+        }
+    }
+
+    function topicTimer() {
+        if (Object.keys(users).length) {
+            timerRunning = true;
+            var now = new Date();
+            timer =
+                countdown(
+                    now,
+                    function (ts) {
+                        if (timerLengths.topic - ts.seconds) {
+                            io.emit('timer', {
+                                    seconds: timerLengths.topic - ts.seconds,
+                                    mode: "topic",
+                                    mult: multiplier(timerLengths.topic - ts.seconds, "topic"),
+                                    topic: settings.topic
+                                }
+                            );
+                        }
+                        if (ts.seconds == 0) {
+                            //console.log("START TOPIC");
+                            settings.mode = "topic";
+                            //console.log(settings.topic);
+                            //console.log(users[settings.topic.id].hasChosen)
+
+
+                        }
+                        if (ts.seconds >= timerLengths.topic) {
+                            //console.log("END TOPIC -- START CLUE");
                             clearInterval(timer);
                             clueTimer();
                         }
@@ -251,7 +273,7 @@ io.on('connection', function (socket) {
                 );
         }
         else {
-            console.log("No Users -- Don't Run Game")
+            //console.log("No Users -- Don't Run Game")
         }
     }
 
@@ -267,24 +289,28 @@ io.on('connection', function (socket) {
                             io.emit('timer', {
                                     seconds: timerLengths.clue - ts.seconds,
                                     mode: "clue",
-                                    mult: multiplier(timerLengths.clue - ts.seconds, "clue")
+                                    mult: multiplier(timerLengths.clue - ts.seconds, "clue"),
+                                    topic: settings.topic
 
                                 }
                             );
                         }
                         if (ts.seconds == 0) {
-                            console.log("START CLUE");
+                            //console.log("START CLUE");
+                            topicHandler();
+
                             settings.mode = "clue";
                             for (var index in users) {
                                 if (users.hasOwnProperty(index)) {
                                     // clear the pins for each user
-                                    users[index] = new Pin(users[index].nickname, users[index].score, users[index].pin.symbol, users[index].pin.rounds);
+                                    //console.log("chosen? -- " + users[index].hasChosen)
+                                    users[index] = new helpers.pin(users[index].nickname, users[index].score, users[index].pin.symbol, users[index].pin.rounds, users[index].hasChosen);
                                 }
                             }
 
                         }
                         if (ts.seconds >= timerLengths.clue) {
-                            console.log("END CLUE -- START PINNING");
+                            //console.log("END CLUE -- START PINNING");
                             clearInterval(timer);
                             pinTimer();
                         }
@@ -292,7 +318,7 @@ io.on('connection', function (socket) {
                 );
         }
         else {
-            console.log("No Users -- Don't Run Game")
+            //console.log("No Users -- Don't Run Game")
         }
     }
 
@@ -305,25 +331,26 @@ io.on('connection', function (socket) {
                     now,
                     function (ts) {
                         if (timerLengths.pin - ts.seconds) {
-                            //console.log(multiplier(30 - ts.seconds, "pin"))
+                            ////console.log(multiplier(30 - ts.seconds, "pin"))
                             io.emit('timer', {
                                     seconds: timerLengths.pin - ts.seconds,
                                     mode: "pin",
-                                    mult: multiplier(timerLengths.pin - ts.seconds, "pin")
+                                    mult: multiplier(timerLengths.pin - ts.seconds, "pin"),
+                                    topic: settings.topic
 
                                 }
                             );
                         }
                         if (ts.seconds == 0) {
-                            console.log("START PINNING");
+                            //console.log("START PINNING");
                             settings.mode = "pin";
                         }
                         if (ts.seconds % (timerLengths.pin / 3) == 0) {
-                            console.log(ts.seconds + " seconds - change multiplier");
+                            //console.log(ts.seconds + " seconds - change multiplier");
                         }
                         if (ts.seconds >= timerLengths.pin) {
 
-                            console.log("END PINNING -- START SCORING");
+                            //console.log("END PINNING -- START SCORING");
                             clearInterval(timer);
                             scoreTimer();
                         }
@@ -332,7 +359,7 @@ io.on('connection', function (socket) {
             ;
         }
         else {
-            console.log("No Users -- Don't Run Game")
+            //console.log("No Users -- Don't Run Game")
         }
     }
 
@@ -348,14 +375,16 @@ io.on('connection', function (socket) {
                             io.emit('timer', {
                                     seconds: timerLengths.score - ts.seconds,
                                     mode: "score",
-                                    mult: multiplier(timerLengths.score - ts.seconds, "score")
+                                    mult: multiplier(timerLengths.score - ts.seconds, "score"),
+                                    topic: settings.topic
 
                                 }
                             );
                         }
                         if (ts.seconds == 0) {
-                            console.log("START SCORE");
+                            //console.log("START SCORE");
                             settings.mode = "score";
+
 
                             var scores = [];
 
@@ -363,7 +392,7 @@ io.on('connection', function (socket) {
                                 if (users.hasOwnProperty(index)) {
                                     var sID = index;
                                     var pin = users[index].pin;
-                                    var dist = pin.distance = distance(pin.lat, pin.lng, answer.lat, answer.lng);
+                                    var dist = pin.distance = helpers.distance(pin.lat, pin.lng, answer.lat, answer.lng);
                                     var score = pin.distance * pin.multiplier;
                                     users[index].rounds += 1;
                                     users[index].score = (users[index].score + score) / users[index].rounds;
@@ -372,19 +401,20 @@ io.on('connection', function (socket) {
                                         nickname: users[index].nickname,
                                         score: score,
                                         pin: pin,
-                                        avgScore: users[index].score
+                                        avgScore: users[index].score,
+                                        country: pin.country
                                     };
                                     scores.push(data);
                                 }
                             }
                             io.emit('scores', scores);
 
-                            //console.log(users[socket.id].nickname + " - " + users[socket.id].multiplier)
+                            ////console.log(users[socket.id].nickname + " - " + users[socket.id].multiplier)
                         }
                         if (ts.seconds >= timerLengths.score) {
-                            console.log("END SCORE -- START NEXT CLUE");
+                            //console.log("END SCORE -- START NEXT CLUE");
                             clearInterval(timer);
-                            clueTimer();
+                            topicTimer();
                         }
                         else {
                             //do nothing
@@ -394,49 +424,66 @@ io.on('connection', function (socket) {
             ;
         }
         else {
-            console.log("No Users -- Don't Run Game")
+            //console.log("No Users -- Don't Run Game")
         }
     }
 
-    console.log(socket.id + " joined the server -- loading login page");
-    users[socket.id] = new Pin();
+    //console.log(socket.id + " joined the server -- loading login page");
+    users[socket.id] = new helpers.pin();
+
 
     socket.on('disconnect', function () {
-        console.log('user disconnected');
+        //console.log('user disconnected');
         delete users[socket.id];
         io.emit('removeFromGame', {id: socket.id});
         if (Object.keys(users).length == 0) {
             endTimers();
         }
+        else {
+            var active = false;
+            for (key in users) {
+                if (users[key].nickname) {
+                    active = true;
+                }
+            }
+            if (!active) {
+                endTimers();
+            }
+        }
     });
 
     socket.on('pin', function (data) {
-        //console.log("MULTIPLIER IS - " + data.mult);
+        ////console.log("MULTIPLIER IS - " + data.mult);
         users[socket.id].pin.geom = data.geom;
         //users[socket.id].pin.symbol = data.symbol;
         users[socket.id].pin.multiplier = data.mult;
         users[socket.id].pin.lat = data.lat;
         users[socket.id].pin.lng = data.lng;
-        //console.log(users[socket.id]);
-        //io.emit('pin', data);
+        users[socket.id].pin.country = data.country;
+        ////console.log(users[socket.id]);
+        io.emit('pin', {
+            geom: users[socket.id].pin.geom,
+            symbol: users[socket.id].pin.symbol,
+            id: socket.id,
+            nickname: users[socket.id].nickname
+        })
     });
 
     socket.on('joinGame', function (data) {
-        console.log(data.nickname + " is ready to join the game -- socket id = " + socket.id);
+        //console.log(data.nickname + " is ready to join the game -- socket id = " + socket.id);
         users[socket.id].nickname = data.nickname;
         socket.emit('joinGame', data);
-        //console.log(Object.keys(users));
+        ////console.log(Object.keys(users));
         if (!timerRunning) {
-            console.log("intro timer");
+            //console.log("intro timer");
             introTimer();
         }
         //io.emit('newPlayer', data)
     });
-})
-;
+});
 
-http.listen(3030, function () {
-    console.log('listening on *:3000');
+http.listen(3000, function () {
+    //console.log('listening on *:3000');
 });
 
 exports = module.exports = app;

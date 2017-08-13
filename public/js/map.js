@@ -5,9 +5,10 @@ var map, mySymbol = null, nickname = null; //eventually set symbol based on serv
 
 require([
     "esri/map",
-    "esri/geometry/Point",
+    "esri/tasks/query",
+    "esri/tasks/QueryTask",
     "dojo/domReady!"
-], function (Map, Point) {
+], function (Map, Query, QueryTask) {
     map = new Map("mapDiv", {
         center: [0, 0],
         zoom: 2,
@@ -28,23 +29,34 @@ require([
     });
 
     map.on("click", function (evt) {
-        var geom = evt.mapPoint;
-        if (mySymbol && nickname) {
-            addPin(geom, mySymbol, socket.id, nickname)
+
+        if (jQuery("#submitPin").is(":visible")) {
+
+            var geom = evt.mapPoint;
+
+            if (mySymbol && nickname) {
+                addPin(geom, mySymbol, socket.id, nickname)
+            }
+            else {
+                nickname = jQuery("#nickname").val();
+                jQuery.post("/users/symbol", {
+                        id: socket.id
+                    },
+                    function (symbol) {
+                        if (symbol) {
+                            mySymbol = symbol;
+                            addPin(geom, mySymbol, socket.id, nickname)
+                        }
+                    }
+                );
+            }
+
         }
         else {
-            nickname = jQuery("#nickname").val();
-            jQuery.post("/users/symbol", {
-                    id: socket.id
-                },
-                function (symbol) {
-                    if (symbol) {
-                        mySymbol = symbol;
-                        addPin(geom, mySymbol, socket.id, nickname)
-                    }
-                }
-            );
+            //dont add a point, one has already been submitted to the server!!!
         }
+
+
     });
 
     zoomTo = function (key) {

@@ -28,6 +28,13 @@
         <div class="infoCentered">INTRO</div>
     </div>
 </div>
+<div class="pane" id="topic">
+    <div class="info">
+        <div class="infoCentered">
+            <div id="topicInfo"></div>
+        </div>
+    </div>
+</div>
 <div class="pane" id="clue">
     <div class="info">
         <div class="infoCentered">CLUE</div>
@@ -46,6 +53,7 @@
     </div>
 </div>
 <div id="timer"></div>
+<div id="next"></div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
     socket = io();
@@ -86,15 +94,6 @@
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
     }
-
-    var playButton = setInterval(function () {
-        var color = "rgb(" + randomValue(200, 255) + "," + randomValue(200, 255) + "," + randomValue(200, 255) + ")"
-        jQuery("#play").animate({
-            backgroundColor: color
-        })
-
-
-    }, 500)
 
 
 </script>
