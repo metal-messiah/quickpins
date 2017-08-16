@@ -11,6 +11,8 @@ var fs = require('fs');
 var countdown = require('countdown');
 var request = require('request');
 var helpers = require(__dirname + "/js/helpers");
+var topics = require(__dirname + "/js/topics");
+var trends = require(__dirname + "/js/trends");
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
@@ -19,6 +21,40 @@ app.use(express.static('public'));
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/app/gettopics', function (req, res) {
+    if (!req.body) return res.sendStatus(400);
+    else {
+        var t = topics.getTopics("topics");
+        randomTopics = t;
+        return res.send(t)
+    }
+});
+
+app.post('/app/settopic', function (req, res) {
+    if (!req.body) return res.sendStatus(400);
+    else {
+        clue = req.body.key;
+        settings.topic.keyword = clue;
+
+        userInput = true;
+
+        trends.getTrendResults(clue, function (err, results) {
+            results = JSON.parse(results);
+            var scores = results.default.geoMapData;
+            trendScores = scores;
+        });
+
+        return res.send("You've Selected <span class='hint'>" + clue + "</span> as the next Search Term")
+    }
+});
+
+app.get('/app/getclue', function (req, res) {
+    if (!req.body) return res.sendStatus(400);
+    else {
+        return res.send("Select Where You Think the Term <span class='hint'>" + clue + "</span> is Googled Most Often")
+    }
 });
 
 app.post('/users/validate', function (req, res) {
@@ -90,44 +126,40 @@ app.post('/app/mode', function (req, res) {
     }
 });
 
-app.post('/app/getclue', function (req, res) {
-    if (!req.body) return res.sendStatus(400);
-    else {
-        return res.send(clue)
-    }
-});
+var users, userInput, randomTopics, trendScores, clue, settings, timer, timerLengths, timerRunning;
+function init() {
+    users = {};
 
+    userInput = false;
 
-var users = {};
+    randomTopics = null;
 
-var answer = {
-    lat: 41,
-    lng: -110,
-    spatialReference: {wkid: 102100, latestWkid: 3857},
-    description: "Salt Lake City, UT"
-};
+    trendScores = null;
 
-var clue = {};
+    clue = "";
 
-var settings = {
-    mode: null,
-    topic: {
-        id: null,
-        nickname: null,
-        keyword: null
-    }
-};
+    settings = {
+        mode: null,
+        topic: {
+            id: null,
+            nickname: null,
+            keyword: null
+        }
+    };
 
-var timer;
-var timerLengths = {
-    intro: 15,
-    clue: 10,
-    pin: 30,
-    score: 15,
-    topic: 15
-};
-var timerRunning = false;
+    timer = null;
 
+    timerLengths = {
+        intro: 15,
+        clue: 10,
+        pin: 30,
+        score: 15,
+        topic: 15
+    };
+    timerRunning = false;
+}
+
+init();
 
 io.on('connection', function (socket) {
 
@@ -178,13 +210,13 @@ io.on('connection', function (socket) {
             var mult;
             ////console.log(seconds)
             if (seconds >= 20) {
-                mult = 1;
+                mult = 3;
             }
             else if (seconds < 20 && seconds >= 10) {
                 mult = 2;
             }
             else {
-                mult = 3;
+                mult = 1;
             }
             return mult
         }
@@ -194,8 +226,9 @@ io.on('connection', function (socket) {
     }
 
     function endTimers() {
-        timerRunning = false;
+        console.log("NO USERS -- END GAME -- SET ALL SETTINGS TO DEFAULTS");
         clearInterval(timer);
+        init();
         io.emit('endGame', {})
     }
 
@@ -299,14 +332,31 @@ io.on('connection', function (socket) {
                             //console.log("START CLUE");
                             topicHandler();
 
+
                             settings.mode = "clue";
                             for (var index in users) {
                                 if (users.hasOwnProperty(index)) {
                                     // clear the pins for each user
                                     //console.log("chosen? -- " + users[index].hasChosen)
-                                    users[index] = new helpers.pin(users[index].nickname, users[index].score, users[index].pin.symbol, users[index].pin.rounds, users[index].hasChosen);
+                                    users[index] = new helpers.pin(users[index].nickname, users[index].score, users[index].pin.symbol, users[index].rounds, users[index].hasChosen);
                                 }
                             }
+
+
+                            //check to see if a user input a topic, if not, randomly choose from randomTopics
+                            if (!userInput) {
+
+                                var topic = randomTopics[Math.floor(Math.random() * randomTopics.length)];
+                                clue = topic;
+                                settings.topic.keyword = clue;
+                                trends.getTrendResults(clue, function (err, results) {
+                                    results = JSON.parse(results);
+                                    var scores = results.default.geoMapData;
+                                    trendScores = scores;
+                                });
+                                io.emit('topicSelected', topic)
+                            }
+
 
                         }
                         if (ts.seconds >= timerLengths.clue) {
@@ -344,6 +394,7 @@ io.on('connection', function (socket) {
                         if (ts.seconds == 0) {
                             //console.log("START PINNING");
                             settings.mode = "pin";
+                            userInput = false;
                         }
                         if (ts.seconds % (timerLengths.pin / 3) == 0) {
                             //console.log(ts.seconds + " seconds - change multiplier");
@@ -392,19 +443,53 @@ io.on('connection', function (socket) {
                                 if (users.hasOwnProperty(index)) {
                                     var sID = index;
                                     var pin = users[index].pin;
-                                    var dist = pin.distance = helpers.distance(pin.lat, pin.lng, answer.lat, answer.lng);
-                                    var score = pin.distance * pin.multiplier;
-                                    users[index].rounds += 1;
-                                    users[index].score = (users[index].score + score) / users[index].rounds;
+
+                                    //var dist = pin.distance = helpers.distance(pin.lat, pin.lng, answer.lat, answer.lng);
+                                    //var score = pin.distance * pin.multiplier;
+                                    var score = 0;
+                                    var trendValue = 0;
+
+                                    if (pin.country) {
+                                        //console.log(pin.country);
+                                        //console.log(trendScores);
+                                        var rank = 0;
+                                        var counter = 1;
+                                        for (var i = 0; i < trendScores.length; i++) {
+                                            if (pin.country.iso == trendScores[i].geoCode) {
+                                                score = trendScores[i].value * pin.multiplier;
+                                                trendValue = trendScores[i].value;
+                                                rank = counter;
+                                            }
+                                            else {
+                                                counter++
+                                            }
+                                        }
+                                        if (!trendValue) {
+                                            rank = 0
+                                        }
+
+                                    }
+
+
+                                    users[index].rounds = users[index].rounds + 1;
+                                    users[index].score = (users[index].score + score);
+                                    users[index].avgScore = users[index].score / users[index].rounds;
                                     data = {
                                         id: sID,
                                         nickname: users[index].nickname,
                                         score: score,
                                         pin: pin,
-                                        avgScore: users[index].score,
-                                        country: pin.country
+                                        totalScore: users[index].score,
+                                        avgScore: users[index].avgScore,
+                                        country: pin.country,
+                                        multiplier: pin.multiplier,
+                                        trendScores: trendScores,
+                                        trendValue: trendValue,
+                                        rank: rank,
+                                        clue: clue
                                     };
                                     scores.push(data);
+
                                 }
                             }
                             io.emit('scores', scores);
@@ -427,6 +512,8 @@ io.on('connection', function (socket) {
             //console.log("No Users -- Don't Run Game")
         }
     }
+
+
 
     //console.log(socket.id + " joined the server -- loading login page");
     users[socket.id] = new helpers.pin();
@@ -471,14 +558,25 @@ io.on('connection', function (socket) {
 
     socket.on('joinGame', function (data) {
         //console.log(data.nickname + " is ready to join the game -- socket id = " + socket.id);
-        users[socket.id].nickname = data.nickname;
-        socket.emit('joinGame', data);
-        ////console.log(Object.keys(users));
-        if (!timerRunning) {
-            //console.log("intro timer");
-            introTimer();
+        if (data.nickname) {
+            if (users[socket.id]) {
+                users[socket.id].nickname = data.nickname;
+                socket.emit('joinGame', data);
+                ////console.log(Object.keys(users));
+                if (!timerRunning) {
+                    console.log("1st User Joined!! Start the Game!!!");
+                    introTimer();
+                }
+            }
         }
         //io.emit('newPlayer', data)
+    });
+
+    socket.on('topicSelected', function (data) {
+        if (data) {
+            clue = data.topic;
+            io.emit('topicSelected', data.topic)
+        }
     });
 });
 

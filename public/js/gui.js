@@ -13,6 +13,25 @@ jQuery("#submitPin").button().click(function () {
     sendPin(pin, pin.geometry.getLatitude(), pin.geometry.getLongitude());
 });
 
+function chooseTopic(key) {
+    jQuery(".choice").hide();
+    var params = {key: key};
+
+    jQuery.post("/app/settopic", params, function (resp) {
+        jQuery("#topicInfo").html(resp);
+
+        topicSelected(key);
+    });
+}
+
+var hintFlash = setInterval(function () {
+    var color = "rgb(" + randomValue(100, 255) + "," + randomValue(100, 255) + "," + randomValue(100, 255) + ")"
+    jQuery(".hint").animate({
+        color: color
+    })
+
+}, 500);
+
 
 function togglePanes(mode, userID, topic) {
 
@@ -26,14 +45,12 @@ function togglePanes(mode, userID, topic) {
             if (userExists) {
 
 
-
                 if (mode != "score" && mode != 'intro') {
                     jQuery(".pane").slideUp(500);
                 }
 
 
-
-                if (mode == 'topic') {
+                if (mode == 'topic' || mode == 'intro' || mode == 'clue') {
                     jQuery("#next").hide();
                 }
                 else {
@@ -43,12 +60,28 @@ function togglePanes(mode, userID, topic) {
 
                 if (mode == 'topic' && userID == topic.id) {
 
-                    jQuery("#topicInfo").html(jQuery('<input/>', {
-                        id: 'topicInput',
-                        title: 'Enter a Topic For The Next Round',
-                        placeholder: 'Enter a Topic For The Next Round'
-                    }));
-                    jQuery("#topic").slideDown(500);
+                    var table = jQuery("<div/>").addClass('choicesTable');
+                    jQuery(table).append("<span>Select the Next Topic</span><br/>");
+                    jQuery.get("/app/gettopics", function (topics) {
+
+                        for (var i = 0; i < topics.length; i++) {
+
+
+                            var choice = jQuery("<button/>", {
+                                html: topics[i],
+                                onclick: "chooseTopic(this.innerHTML)"
+                            }).addClass("ui-button ui-corner-all ui-widget choice");
+
+
+                            jQuery(table).append(choice);
+                            jQuery(table).append("<br/>");
+                        }
+                        jQuery("#topicInfo").html(table);
+                        jQuery("#topic").slideDown(500);
+
+                    });
+
+
                 }
                 else if (mode == 'topic' && userID != topic.id) {
 
@@ -78,6 +111,7 @@ function togglePanes(mode, userID, topic) {
 }
 
 jQuery("#nickname").tooltip();
+jQuery("#submitPin").tooltip();
 
 jQuery("#play").click(function () {
     var nickname = jQuery("#nickname").val();

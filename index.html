@@ -37,12 +37,12 @@
 </div>
 <div class="pane" id="clue">
     <div class="info">
-        <div class="infoCentered">CLUE</div>
+        <div id="clueInfo" class="infoCentered">CLUE</div>
     </div>
 </div>
 <div id="pin">
     <div id="mapDiv"></div>
-    <div id="submitPin">Submit Pin</div>
+    <div title="Submit" id="submitPin">&#10004;</div>
 
 </div>
 <div class="pane" id="score">
@@ -52,6 +52,7 @@
         </div>
     </div>
 </div>
+
 <div id="timer"></div>
 <div id="next"></div>
 <script src="/socket.io/socket.io.js"></script>
@@ -93,6 +94,21 @@
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+    }
+
+    function ordinal_suffix_of(i) {
+        var j = i % 10,
+            k = i % 100;
+        if (j == 1 && k != 11) {
+            return i + "st";
+        }
+        if (j == 2 && k != 12) {
+            return i + "nd";
+        }
+        if (j == 3 && k != 13) {
+            return i + "rd";
+        }
+        return i + "th";
     }
 
 

@@ -29,6 +29,7 @@ module.exports = {
         this.nickname = nickname || null;
         this.score = score || 0;
         this.rounds = rounds || 0;
+        this.avgScore = this.score/this.rounds;
         this.hasChosen = hasChosen || false;
         this.pin = {
             geom: null,
@@ -54,9 +55,10 @@ module.exports = {
             },
             multiplier: 0,
             distance: 0,
-            lat: 89.99,
+            lat: 0,
             lng: 0,
-            country: null
+            country: null,
+            iso: null
         }
     }
 };

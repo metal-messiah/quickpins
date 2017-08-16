@@ -146,9 +146,32 @@ var topics = [
     "Snow",
     "Volcano",
     "Earthquake",
-    "KFC"
+    "KFC",
+    "Boner",
+    "Horny",
+    "Depressed",
+    "Vegan",
+    "Vegetarian",
+    "Donuts",
+    "Ice Cream"
+];
+
+
+var landmarks = [
+    {name: "The Statue of Liberty", image:"/images/landmarks/statue_of_liberty.jpg",iso:'US'},
+    {name: "The Eiffel Tower", image:"/images/landmarks/eiffel_tower.jpg",iso:'FR'},
+    {name: "St. Basil's Cathedral", image:"/images/landmarks/eiffel_tower.jpg",iso:'RU'}
+    // to be continued from http://designlike.com/100-most-famous-landmarks-around-the-world/
 ];
 
 module.exports = {
-    topics: topics
+    topics: topics,
+    landmarks: landmarks,
+    getTopics: function(array) {
+        var items = [];
+        for (var i = 0; i < 4; i++) {
+            items[i] = module.exports[array][Math.floor(Math.random() * module.exports.topics.length)]
+        }
+        return items;
+    }
 };

@@ -1,7 +1,8 @@
 /**
  * Created by Porter on 8/7/2017.
  */
-var mode;
+var mode, clue;
+
 require([
     "esri/tasks/query",
     "esri/tasks/QueryTask",
@@ -10,6 +11,17 @@ require([
     jQuery(function () {
             var mult;
             var countries = "http://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Countries_(Generalized)/FeatureServer/0"
+
+            topicSelected = function (key) {
+                socket.emit("topicSelected", {topic: key});
+            };
+
+            socket.on('topicSelected', function (data) {
+                clue = data;
+                jQuery.get("/app/getclue", function (resp) {
+                    jQuery("#clueInfo").html(resp)
+                })
+            });
 
             socket.on('endGame', function (data) {
                 jQuery("#timer").html("");
@@ -21,8 +33,40 @@ require([
                 for (var i = 0; i < data.length; i++) {
                     console.log(data);
                     if (data[i].id == socket.id) {
-                        jQuery("#scoreResults").html("Current Score - " + formatNumber(data[i].score, 2) + " Miles Off<hr>Average Score - " + formatNumber(data[i].avgScore, 2) + " Miles Off")
+
+                        var player = data[i];
+
+                        if (player.pin.geom) {
+
+
+                            if (player.rank) {
+                                var descriptiveText = player.country.country + " Ranked " + ordinal_suffix_of(player.rank) + " in the World for Googling " + clue;
+                            }
+                            else {
+                                var descriptiveText = player.country.country + " Did Not Google " + clue + " Enough to Make the List";
+                            }
+
+                            var top5 = "The Top 5 Countries Were <hr>" +
+                                player.trendScores[0].geoName + "(" + player.trendScores[0].value[0] + ")<br>" +
+                                player.trendScores[1].geoName + "(" + player.trendScores[1].value[0] + ")<br>" +
+                                player.trendScores[2].geoName + "(" + player.trendScores[2].value[0] + ")<br>" +
+                                player.trendScores[3].geoName + "(" + player.trendScores[3].value[0] + ")<br>" +
+                                player.trendScores[4].geoName + "(" + player.trendScores[4].value[0] + ")";
+
+                            var delim = "<br><hr><br>";
+
+                            var scoreBreakdown = "Score: " + player.trendValue + "<br>Multiplier: " + player.multiplier + "<hr>Current Round: " + formatNumber(data[i].score, 0) + "<hr>Average Score: " + formatNumber(data[i].avgScore, 2) + "<hr>Total Score: " + formatNumber(data[i].totalScore, 2);
+
+
+                            jQuery("#scoreResults").html(descriptiveText + delim + top5 + delim + scoreBreakdown);
+
+                            clue = null;
+                        }
+                        else {
+                            jQuery("#scoreResults").html("No Pin Found!!!!  No Score Added!!!")
+                        }
                     }
+
                 }
                 showAllPins(data);
 
@@ -38,7 +82,12 @@ require([
                 }
                 jQuery("#timer").html(data.seconds);
                 if (data.topic.nickname) {
-                    jQuery("#next").html(data.topic.nickname + " Will Select The Next Topic");
+
+                    var keyword = data.topic.keyword || "None";
+
+
+                    jQuery("#next").html("Topic: <span class='nextHint'>" + keyword + "</span><hr>" + data.topic.nickname + " Will Select The Next Topic");
+
                 }
             });
 
@@ -75,7 +124,7 @@ require([
 
                 var q = new Query();
                 q.geometry = marker.geometry;
-                q.outFields = ['Country'];
+                q.outFields = ['Country', 'ISO'];
                 q.returnGeometry = true; //could return if google trends uses geometry instead of keywords for countries
                 var qT = new QueryTask(countries);
                 qT.execute(q, function (resp) {
@@ -92,7 +141,11 @@ require([
                         mult: mult,
                         lat: lat,
                         lng: lng,
-                        country: {country: country.attributes.Country, geom: country.geometry}
+                        country: {
+                            iso: country.attributes.ISO,
+                            country: country.attributes.Country,
+                            geom: country.geometry
+                        }
                     });
 
                 })
