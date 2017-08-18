@@ -1,126 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dbc72dd1-b5d7-4f0e-a0f8-e7e945301393" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/abu_simbel.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/acropolis.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/agia_sophia.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/al_aqsa.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/american_cemetery.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/angel_falls.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/angkor_wat.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/atomium.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/auschwitz.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/big_ben.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/blue_domed_church.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/bran_castle.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/brandenburg_gate.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/burj_al_arab.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/cape_of_good_hope.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/capitol_hill.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/carnac.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/chichen_itza.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/christ_the_redeemer.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/cn_tower.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/colosseum.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/dom.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/easter_island.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/eiffel_tower.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/empire_state_building.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/ephesus.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/faisal_mosque.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/forbidden_city.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/golden_gate_bridge.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/golden_temple_of_amritsar.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/great_buddha.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/great_sphynx.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/great_wall.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/half_dome.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/hermitage.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/hollywood_sign.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/iguazu_falls.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/inukshuk.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/jin_mao_swfc.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/killimanjaro.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/konark_sun_temple.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/kremlin.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/lascaux.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/loch_ness.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/lotus_temple.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/luxor_temple.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/machu_picchu.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/manneken_pis.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/mecca.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/middle_of_the_earth.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/millau_bridge.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/minaret_of_jam.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/mont_st_michel.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/mount_eden_crater.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/mount_everest.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/mount_rushmore.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/mt_fuji.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/necado_mismi.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/neptune.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/neuschwanstein.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/newgrange.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/niagara_falls.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/north_cape.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/opera_house.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/palace_of_parliament.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/parc_guell.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/petra.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/piazza_san_marco.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/pompeii.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/potala_palace.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/prophets_mosque.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/pyramids.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/rock.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/sacre_coeur.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/sagrada_familia.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/skellig_michael.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/sphynx.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/st_basil_cathedral.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/st_peters_cathedral.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/statue_of_liberty.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/stonehenge.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/table_mountain.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/taj_mahal.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/temple_of_besakih.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/the_blue_mosque.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/the_grand_canyon.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/the_little_mermaid.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/the_louvre.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/tower_bridge.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/tower_of_pisa.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/trevi_fountain.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/twelve_apostles.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/twyfelfontein.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/uluru.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/victoria_falls.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/vinson_massif.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/wailing_wall.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/waterloo.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/white_cliffs_of_dover.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/landmarks/windmills.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/trends.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/google-trends-api/.npmignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/google-trends-api/CHANGES.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/google-trends-api/LICENSE" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/google-trends-api/README.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/google-trends-api/examples.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/google-trends-api/lib/google-trends-api.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/google-trends-api/lib/google-trends-api.min.js.map" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/google-trends-api/package.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/google-trends-api/test.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/node_modules/google-trends-api/test2.html" />
+    <list default="true" id="dbc72dd1-b5d7-4f0e-a0f8-e7e945301393" name="Default" comment="So Many Changes">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.js" afterPath="$PROJECT_DIR$/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/helpers.js" afterPath="$PROJECT_DIR$/js/helpers.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/topics.js" afterPath="$PROJECT_DIR$/js/topics.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/gui.css" afterPath="$PROJECT_DIR$/public/css/gui.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/style.css" afterPath="$PROJECT_DIR$/public/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/gui.js" afterPath="$PROJECT_DIR$/public/js/gui.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/socketHandler.js" afterPath="$PROJECT_DIR$/public/js/socketHandler.js" />
     </list>
@@ -143,7 +26,7 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
+            <state relative-caret-position="442">
               <caret line="28" column="40" lean-forward="false" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
               <folding>
                 <element signature="e#0#41#0" expanded="false" />
@@ -167,7 +50,7 @@
       <file leaf-file-name="helpers.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/helpers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
+            <state relative-caret-position="357">
               <caret line="23" column="33" lean-forward="false" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
               <folding>
                 <element signature="e#0#42#0" expanded="false" />
@@ -189,7 +72,7 @@
       <file leaf-file-name="socketHandler.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/socketHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
+            <state relative-caret-position="1496">
               <caret line="88" column="41" lean-forward="false" selection-start-line="88" selection-start-column="41" selection-end-line="88" selection-end-column="41" />
               <folding />
             </state>
@@ -199,7 +82,7 @@
       <file leaf-file-name="gui.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/gui.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="369">
+            <state relative-caret-position="1734">
               <caret line="104" column="17" lean-forward="false" selection-start-line="104" selection-start-column="17" selection-end-line="104" selection-end-column="17" />
               <folding>
                 <element signature="e#0#41#0" expanded="false" />
@@ -221,8 +104,8 @@
       <file leaf-file-name="topics.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/topics.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="607">
-              <caret line="165" column="0" lean-forward="true" selection-start-line="165" selection-start-column="0" selection-end-line="165" selection-end-column="0" />
+            <state relative-caret-position="2091">
+              <caret line="288" column="24" lean-forward="true" selection-start-line="288" selection-start-column="24" selection-end-line="288" selection-end-column="24" />
               <folding>
                 <element signature="e#0#42#0" expanded="false" />
               </folding>
@@ -233,18 +116,8 @@
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2567">
+            <state relative-caret-position="136">
               <caret line="8" column="17" lean-forward="false" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/package.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -432,6 +305,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="images" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="landmarks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quick_pins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="quick_pins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="css" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -568,7 +463,8 @@
       <workItem from="1502559006907" duration="13141000" />
       <workItem from="1502761875134" duration="3671000" />
       <workItem from="1502808230449" duration="20008000" />
-      <workItem from="1502843607876" duration="4538000" />
+      <workItem from="1502843607876" duration="4588000" />
+      <workItem from="1503080867194" duration="5420000" />
     </task>
     <task id="LOCAL-00001" summary="VCS commit">
       <created>1501974679572</created>
@@ -619,11 +515,18 @@
       <option name="project" value="LOCAL" />
       <updated>1502582709569</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="So Many Changes">
+      <created>1502849093253</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1502849093253</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="114985000" />
+    <option name="totallyTimeSpent" value="120455000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -641,7 +544,8 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25159237" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32575756" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44155845" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -653,7 +557,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -665,21 +568,14 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="VCS commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="VCS commit" />
+    <MESSAGE value="So Many Changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="So Many Changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/public/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="6" lean-forward="false" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/css/gui.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -1003,7 +899,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2567">
+        <state relative-caret-position="136">
           <caret line="8" column="17" lean-forward="false" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
           <folding />
         </state>
@@ -1011,7 +907,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/socketHandler.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
+        <state relative-caret-position="1496">
           <caret line="88" column="41" lean-forward="false" selection-start-line="88" selection-start-column="41" selection-end-line="88" selection-end-column="41" />
           <folding />
         </state>
@@ -1019,7 +915,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/gui.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
+        <state relative-caret-position="1734">
           <caret line="104" column="17" lean-forward="false" selection-start-line="104" selection-start-column="17" selection-end-line="104" selection-end-column="17" />
           <folding>
             <element signature="e#0#41#0" expanded="false" />
@@ -1029,7 +925,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/helpers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
+        <state relative-caret-position="357">
           <caret line="23" column="33" lean-forward="false" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
           <folding>
             <element signature="e#0#42#0" expanded="false" />
@@ -1052,7 +948,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
+        <state relative-caret-position="442">
           <caret line="28" column="40" lean-forward="false" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
           <folding>
             <element signature="e#0#41#0" expanded="false" />
@@ -1070,10 +966,15 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/images/landmarks/burj_al_arab.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/topics.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="607">
-          <caret line="165" column="0" lean-forward="true" selection-start-line="165" selection-start-column="0" selection-end-line="165" selection-end-column="0" />
+        <state relative-caret-position="2091">
+          <caret line="288" column="24" lean-forward="true" selection-start-line="288" selection-start-column="24" selection-end-line="288" selection-end-column="24" />
           <folding>
             <element signature="e#0#42#0" expanded="false" />
           </folding>

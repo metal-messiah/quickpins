@@ -25,7 +25,7 @@ function chooseTopic(key) {
 }
 
 var hintFlash = setInterval(function () {
-    var color = "rgb(" + randomValue(100, 255) + "," + randomValue(100, 255) + "," + randomValue(100, 255) + ")"
+    var color = "rgb(" + randomValue(100, 255) + "," + randomValue(100, 255) + "," + randomValue(100, 255) + ")";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     jQuery(".hint").animate({
         color: color
     })
@@ -125,7 +125,7 @@ jQuery("#play").click(function () {
 });
 var playButton = setInterval(function () {
     if (jQuery("#nickname").val()) {
-        var color = "rgb(" + randomValue(200, 255) + "," + randomValue(200, 255) + "," + randomValue(200, 255) + ")"
+        var color = "rgb(" + randomValue(200, 255) + "," + randomValue(200, 255) + "," + randomValue(200, 255) + ")";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
         jQuery("#play").animate({
             backgroundColor: color,
             color: "black"
