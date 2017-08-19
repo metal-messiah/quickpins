@@ -26,9 +26,12 @@ app.get('/', function (req, res) {
 app.get('/app/gettopics', function (req, res) {
     if (!req.body) return res.sendStatus(400);
     else {
-        var t = topics.getTopics("topics");
+
+        var category = settings.categories[Math.floor(Math.random() * settings.categories.length)];
+        var t = topics.getTopics(category);
         randomTopics = t;
-        return res.send(t)
+        settings.topic.category = category;
+        return res.send({data: t, category: category})
     }
 });
 
@@ -36,24 +39,41 @@ app.post('/app/settopic', function (req, res) {
     if (!req.body) return res.sendStatus(400);
     else {
         clue = req.body.key;
+        var category = req.body.category;
+        var landmarkISO = req.body.iso;
+        var url = req.body.url;
         settings.topic.keyword = clue;
+        settings.topic.category = category;
+        settings.topic.iso = landmarkISO;
+        settings.topic.url = url;
 
         userInput = true;
 
-        trends.getTrendResults(clue, function (err, results) {
-            results = JSON.parse(results);
-            var scores = results.default.geoMapData;
-            trendScores = scores;
-        });
+        if (category == "topics") {
+            trends.getTrendResults(clue, function (err, results) {
+                results = JSON.parse(results);
+                var scores = results.default.geoMapData;
+                trendScores = scores;
+            });
+        }
 
-        return res.send("You've Selected <span class='hint'>" + clue + "</span> as the next Search Term")
+        if (category == "landmarks") {
+            landmarkCountry = landmarkISO;
+        }
+
+        return res.send("You've Selected <span class='hint'>" + clue + "</span> for the Next Round")
     }
 });
 
 app.get('/app/getclue', function (req, res) {
     if (!req.body) return res.sendStatus(400);
     else {
-        return res.send("Select Where You Think the Term <span class='hint'>" + clue + "</span> is Googled Most Often")
+        if (settings.topic.category == "topics") {
+            return res.send("Select Where You Think the Term <span class='hint'>" + clue + "</span> is Googled Most Often")
+        }
+        else if (settings.topic.category == "landmarks") {
+            return res.send("In What Country Can You Find <span class='hint'>" + clue + "</span>?<br><br><div class='landmarkClue' style='background-image:url(" + settings.topic.url + ")'></div>")
+        }
     }
 });
 
@@ -136,6 +156,8 @@ function init() {
 
     trendScores = null;
 
+    landmarkCountry = null;
+
     clue = "";
 
     settings = {
@@ -143,8 +165,11 @@ function init() {
         topic: {
             id: null,
             nickname: null,
-            keyword: null
-        }
+            keyword: null,
+            category: null,
+            iso: null
+        },
+        categories: ["topics", "landmarks"]
     };
 
     timer = null;
@@ -347,13 +372,25 @@ io.on('connection', function (socket) {
                             if (!userInput) {
 
                                 var topic = randomTopics[Math.floor(Math.random() * randomTopics.length)];
-                                clue = topic;
-                                settings.topic.keyword = clue;
-                                trends.getTrendResults(clue, function (err, results) {
-                                    results = JSON.parse(results);
-                                    var scores = results.default.geoMapData;
-                                    trendScores = scores;
-                                });
+
+
+                                if (settings.topic.category == "topics") {
+                                    clue = topic;
+                                    settings.topic.keyword = clue;
+                                    trends.getTrendResults(clue, function (err, results) {
+                                        results = JSON.parse(results);
+                                        var scores = results.default.geoMapData;
+                                        trendScores = scores;
+                                    });
+                                }
+                                if (settings.topic.category == "landmarks") {
+                                    clue = topic.name;
+                                    settings.topic.keyword = clue;
+                                    var iso = topics.getLandmarkCounty(clue);
+                                    landmarkCountry = iso;
+                                    settings.topic.iso = iso;
+                                    trendScores = null;
+                                }
                                 io.emit('topicSelected', topic)
                             }
 
@@ -452,20 +489,36 @@ io.on('connection', function (socket) {
                                     if (pin.country) {
                                         //console.log(pin.country);
                                         //console.log(trendScores);
-                                        var rank = 0;
-                                        var counter = 1;
-                                        for (var i = 0; i < trendScores.length; i++) {
-                                            if (pin.country.iso == trendScores[i].geoCode) {
-                                                score = trendScores[i].value * pin.multiplier;
-                                                trendValue = trendScores[i].value;
-                                                rank = counter;
+                                        if (settings.topic.category == "topics") {
+                                            var rank = 0;
+                                            var counter = 1;
+                                            for (var i = 0; i < trendScores.length; i++) {
+                                                if (pin.country.iso == trendScores[i].geoCode) {
+                                                    score = trendScores[i].value * pin.multiplier;
+                                                    trendValue = trendScores[i].value;
+                                                    rank = counter;
+                                                }
+                                                else {
+                                                    counter++
+                                                }
                                             }
-                                            else {
-                                                counter++
+                                            if (!trendValue) {
+                                                rank = 0
                                             }
                                         }
-                                        if (!trendValue) {
-                                            rank = 0
+                                        if (settings.topic.category == "landmarks") {
+                                            var rank = 0;
+                                            var counter = 1;
+                                            if (pin.country.iso == landmarkCountry) {
+                                                score = 100 * pin.multiplier;
+                                                trendValue = 100;
+                                                rank = 1;
+                                            }
+                                            else {
+                                                score = 0;
+                                                trendValue = 0;
+                                                rank = 0;
+                                            }
                                         }
 
                                     }
@@ -486,7 +539,9 @@ io.on('connection', function (socket) {
                                         trendScores: trendScores,
                                         trendValue: trendValue,
                                         rank: rank,
-                                        clue: clue
+                                        clue: clue,
+                                        category: settings.topic.category,
+                                        iso: landmarkCountry || null
                                     };
                                     scores.push(data);
 
@@ -512,7 +567,6 @@ io.on('connection', function (socket) {
             //console.log("No Users -- Don't Run Game")
         }
     }
-
 
 
     //console.log(socket.id + " joined the server -- loading login page");

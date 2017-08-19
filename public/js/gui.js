@@ -13,9 +13,10 @@ jQuery("#submitPin").button().click(function () {
     sendPin(pin, pin.geometry.getLatitude(), pin.geometry.getLongitude());
 });
 
-function chooseTopic(key) {
+function chooseTopic(key, category, iso, url) {
+
     jQuery(".choice").hide();
-    var params = {key: key};
+    var params = {key: key, category: category, iso: iso, url: url};
 
     jQuery.post("/app/settopic", params, function (resp) {
         jQuery("#topicInfo").html(resp);
@@ -61,15 +62,34 @@ function togglePanes(mode, userID, topic) {
                 if (mode == 'topic' && userID == topic.id) {
 
                     var table = jQuery("<div/>").addClass('choicesTable');
-                    jQuery(table).append("<span>Select the Next Topic</span><br/>");
-                    jQuery.get("/app/gettopics", function (topics) {
 
-                        for (var i = 0; i < topics.length; i++) {
+                    jQuery.get("/app/gettopics", function (topics) {
+                        if (topics.category == "topics"){
+                            jQuery(table).append("<span>Select the Next Topic</span><br/>");
+                        }
+                        else if (topics.category == "landmarks"){
+                            jQuery(table).append("<span>Select a Landmark</span><br/>");
+                        }
+
+                        console.log(topics.data);
+                        for (var i = 0; i < topics.data.length; i++) {
+
+                            var html, id, url;
+                            if (topics.category == "topics") {
+                                html = topics.data[i];
+                                id = null
+                            }
+                            else if (topics.category == "landmarks") {
+                                html = topics.data[i].name;
+                                id = topics.data[i].iso;
+                                url = topics.data[i].image;
+                            }
 
 
                             var choice = jQuery("<button/>", {
-                                html: topics[i],
-                                onclick: "chooseTopic(this.innerHTML)"
+                                html: html,
+                                id: id,
+                                onclick: "chooseTopic(this.innerHTML, '" + topics.category + "',this.id,'" + url + "')"
                             }).addClass("ui-button ui-corner-all ui-widget choice");
 
 

@@ -202,3 +202,13 @@ body {
     cursor: pointer;
     color: white;
 }
+
+.landmarkClue {
+    height: 75%;
+    width: 100%;
+    max-width: 600px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin: 0 auto;
+}

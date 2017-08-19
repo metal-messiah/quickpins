@@ -10,7 +10,8 @@ require([
 ], function (Query, QueryTask) {
     jQuery(function () {
             var mult;
-            var countries = "http://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Countries_(Generalized)/FeatureServer/0";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+            var countries = "http://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Countries_(Generalized)/FeatureServer/0";
+
 
             topicSelected = function (key) {
                 socket.emit("topicSelected", {topic: key});
@@ -38,29 +39,48 @@ require([
 
                         if (player.pin.geom) {
 
+                            if (player.category == "topics") {
 
-                            if (player.rank) {
-                                var descriptiveText = player.country.country + " Ranked " + ordinal_suffix_of(player.rank) + " in the World for Googling " + clue;
+                                if (player.rank) {
+                                    var descriptiveText = player.country.country + " Ranked " + ordinal_suffix_of(player.rank) + " in the World for Googling " + clue;
+                                }
+                                else {
+                                    var descriptiveText = player.country.country + " Did Not Google " + clue + " Enough to Make the List";
+                                }
+
+
+                                var top5 = "The Top 5 Countries Were <hr>" +
+                                    player.trendScores[0].geoName + "(" + player.trendScores[0].value[0] + ")<br>" +
+                                    player.trendScores[1].geoName + "(" + player.trendScores[1].value[0] + ")<br>" +
+                                    player.trendScores[2].geoName + "(" + player.trendScores[2].value[0] + ")<br>" +
+                                    player.trendScores[3].geoName + "(" + player.trendScores[3].value[0] + ")<br>" +
+                                    player.trendScores[4].geoName + "(" + player.trendScores[4].value[0] + ")";
+
+
+                                var delim = "<br><hr><br>";
+
+                                var scoreBreakdown = "Score: " + player.trendValue + "<br>Multiplier: " + player.multiplier + "<hr>Current Round: " + formatNumber(data[i].score, 0) + "<hr>Average Score: " + formatNumber(data[i].avgScore, 2) + "<hr>Total Score: " + formatNumber(data[i].totalScore, 2);
+
+
+                                jQuery("#scoreResults").html(descriptiveText + delim + top5 + delim + scoreBreakdown);
+
+                                clue = null;
                             }
-                            else {
-                                var descriptiveText = player.country.country + " Did Not Google " + clue + " Enough to Make the List";
+                            else if (player.category == "landmarks") {
+
+                                if (player.rank) {
+                                    var descriptiveText = "Correct! " + clue + " is located in " + player.country.country;
+                                }
+                                else {
+                                    var descriptiveText = "Incorrect! " + clue + " is not located in " + player.country.country + ", It is in " + player.iso;
+                                }
+                                var delim = "<br><hr><br>";
+
+                                var scoreBreakdown = "Score: " + player.trendValue + "<br>Multiplier: " + player.multiplier + "<hr>Current Round: " + formatNumber(data[i].score, 0) + "<hr>Average Score: " + formatNumber(data[i].avgScore, 2) + "<hr>Total Score: " + formatNumber(data[i].totalScore, 2);
+                                jQuery("#scoreResults").html(descriptiveText + delim + scoreBreakdown);
+
+                                clue = null;
                             }
-
-                            var top5 = "The Top 5 Countries Were <hr>" +
-                                player.trendScores[0].geoName + "(" + player.trendScores[0].value[0] + ")<br>" +
-                                player.trendScores[1].geoName + "(" + player.trendScores[1].value[0] + ")<br>" +
-                                player.trendScores[2].geoName + "(" + player.trendScores[2].value[0] + ")<br>" +
-                                player.trendScores[3].geoName + "(" + player.trendScores[3].value[0] + ")<br>" +
-                                player.trendScores[4].geoName + "(" + player.trendScores[4].value[0] + ")";
-
-                            var delim = "<br><hr><br>";
-
-                            var scoreBreakdown = "Score: " + player.trendValue + "<br>Multiplier: " + player.multiplier + "<hr>Current Round: " + formatNumber(data[i].score, 0) + "<hr>Average Score: " + formatNumber(data[i].avgScore, 2) + "<hr>Total Score: " + formatNumber(data[i].totalScore, 2);
-
-
-                            jQuery("#scoreResults").html(descriptiveText + delim + top5 + delim + scoreBreakdown);
-
-                            clue = null;
                         }
                         else {
                             jQuery("#scoreResults").html("No Pin Found!!!!  No Score Added!!!")
@@ -84,9 +104,16 @@ require([
                 if (data.topic.nickname) {
 
                     var keyword = data.topic.keyword || "None";
+                    var category = data.topic.category;
+                    var c;
+                    if (category == "topics") {
+                        c = "Topic";
+                    } else if (category == "landmarks") {
+                        c = "Landmark";
+                    }
 
 
-                    jQuery("#next").html("Topic: <span class='nextHint'>" + keyword + "</span><hr>" + data.topic.nickname + " Will Select The Next Topic");
+                    jQuery("#next").html(c + ": <span class='nextHint'>" + keyword + "</span><hr>" + data.topic.nickname + " Will Select Next");
 
                 }
             });
@@ -152,4 +179,4 @@ require([
             }
         }
     );
-});;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+});

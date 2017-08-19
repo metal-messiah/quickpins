@@ -196,20 +196,10 @@ var landmarks = [
     {name: "Easter Island", image: "/images/landmarks/easter_island.jpg", iso: 'CL', country: "Chile"},
     {name: "Capitol Hill", image: "/images/landmarks/capitol_hill.jpg", iso: 'US', country: "United States"},
     {name: "Al Aqsa Mosque", image: "/images/landmarks/al_aqsa.jpg", iso: 'IL', country: "Israel"},
-    {
-        name: "Niagara Falls",
-        image: "/images/landmarks/niagara_falls.jpg",
-        iso: 'US;CA',
-        country: "United States & Canada"
-    },
+
     {name: "Angkor Wat", image: "/images/landmarks/angkor_wat.jpg", iso: 'KH', country: "Cambodia"},
     {name: "Manneken Pis", image: "/images/landmarks/manneken_pis.jpg", iso: 'BE', country: "Belgium"},
-    {
-        name: "Mount Everest",
-        image: "/images/landmarks/mount_everest.jpg",
-        iso: 'CN;NP',
-        country: "Tibet (China) & Nepal"
-    },
+
     {
         name: "St. Peter's Cathedral",
         image: "/images/landmarks/st_peters_cathedral.jpg",
@@ -217,7 +207,7 @@ var landmarks = [
         country: "Vatican City"
     },
     {name: "Mount Rushmore", image: "/images/landmarks/mount_rushmore.jpg", iso: 'US', country: "United States"},
-    {name: "Victoria Falls", image: "/images/landmarks/victoria_falls.jpg", iso: 'ZM;ZW', country: "Zambia & Zimbabwe"},
+    {name: "Victoria Falls", image: "/images/landmarks/victoria_falls.jpg", iso: 'ZM', country: "Zambia"},
     {name: "The Grand Canyon", image: "/images/landmarks/the_grand_canyon.jpg", iso: 'US', country: "United States"},
     {name: "Nevada Mismi", image: "/images/landmarks/nevado_mismi.jpg", iso: 'PE', country: "Peru"},
     {name: "Great Buddha", image: "/images/landmarks/great_buddha.jpg", iso: 'JP', country: "Japan"},
@@ -239,7 +229,7 @@ var landmarks = [
     {name: "Parc Guell", image: "/images/landmarks/parc_guell.jpg", iso: 'ES', country: "Spain"},
     {name: "Kilimanjaro", image: "/images/landmarks/kilimanjaro.jpg", iso: 'TZ', country: "Tanzania"},
     {name: "Forbidden City", image: "/images/landmarks/forbidden_city.jpg", iso: 'CN', country: "China"},
-    {name: "Iguazu Falls", image: "/images/landmarks/iguazu_falls.jpg", iso: 'BR;AR', country: "Brazil & Argentina"},
+    {name: "Iguazu Falls", image: "/images/landmarks/iguazu_falls.jpg", iso: 'BR', country: "Brazil"},
     {name: "The Colosseum", image: "/images/landmarks/colosseum.jpg", iso: 'IT', country: "Italy"},
     {name: "Twyfelfontein", image: "/images/landmarks/twyfelfontein.jpg", iso: 'NA', country: "Namibia"},
     {name: "Tower Bridge", image: "/images/landmarks/tower_bridge.jpg", iso: 'GB', country: "United Kingdom"},
@@ -310,9 +300,40 @@ module.exports = {
     landmarks: landmarks,
     getTopics: function (array) {
         var items = [];
-        for (var i = 0; i < 4; i++) {
-            items[i] = module.exports[array][Math.floor(Math.random() * module.exports.topics.length)]
+
+        while (items.length < 4) {
+            var isDuplicate = false;
+            var item = module.exports[array][Math.floor(Math.random() * module.exports[array].length)];
+            for (var i = 0; i < items.length; i++) {
+                if (array == "topics") {
+                    if (items[i] == item) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+                else if (array == "landmarks") {
+                    if (items[i].name == item.name) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+            }
+            if (!isDuplicate) {
+                items[i] = item;
+            }
         }
+
         return items;
+    },
+    getLandmarkCounty: function (name) {
+        var l = module.exports.landmarks;
+        var match = null;
+        for (var i = 0; i < l.length; i++) {
+            if (name === l[i].name) {
+                match = l[i].iso;
+                break;
+            }
+        }
+        return match;
     }
 };

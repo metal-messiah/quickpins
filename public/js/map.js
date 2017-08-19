@@ -11,13 +11,13 @@ require([
 ], function (Map, Query, QueryTask) {
     map = new Map("mapDiv", {
         center: [0, 0],
-        zoom: 2,
+        zoom: 4,
         basemap: "hybrid",
         autoResize: true,
         fadeOnZoom: true,
         fitExtent: true,
         logo: false,
-        minZoom: 2,
+        minZoom: 4,
         nav: false,
         showAttribution: false,
         slider: false
